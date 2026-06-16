@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   description: "Lembaga sosial yang berkomitmen untuk membahagiakan, mengasuh, dan memberdayakan anak-anak yatim dan dhuafa.",
   keywords: ["yayasan yatim", "baitul ikhlas", "peduli yatim", "donasi yatim", "lembaga sosial", "amal"],
   authors: [{ name: "Yayasan Baitul Ikhlas" }],
-  metadataBase: new URL("https://baitulikhlas.or.id"), // Ganti dengan domain asli Anda nanti
+  metadataBase: new URL("https://yayasanbaitulikhlass.vercel.app"), // Ganti dengan domain asli Anda nanti
   alternates: {
     canonical: "/",
   },
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Yayasan Baitul Ikhlas Peduli Yatim",
     description: "Lembaga sosial yang berkomitmen untuk membahagiakan anak-anak yatim.",
-    url: "https://baitulikhlas.or.id",
+    url: "https://yayasanbaitulikhlass.vercel.app",
     siteName: "Yayasan Baitul Ikhlas",
     locale: "id_ID",
     type: "website",
@@ -69,12 +69,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth`} // Menggunakan scroll-smooth bawaan tailwind untuk UX yang lebih baik
     >
       <head>
-        {/* Catatan Font Awesome: 
-          Disarankan untuk menginstal Font Awesome via npm demi performa SEO yang maksimal:
-          `npm i @fortawesome/fontawesome-free` lalu import di globals.css: `@import "~@fortawesome/fontawesome-free/css/all.relative.css";`
-          
-          Jika terpaksa menggunakan CDN, gunakan komponen <Script> dari 'next/script' daripada tag <link> manual.
-        */}
+       <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+          crossOrigin="anonymous" 
+          referrerPolicy="no-referrer" 
+        />
       </head>
       <body className="min-h-full bg-slate-50 text-slate-900 antialiased flex flex-col font-sans">
         {/* Main content wrapper */}
