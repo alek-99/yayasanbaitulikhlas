@@ -97,7 +97,7 @@ export default function CampaignPage() {
         {loading ? (
           <div className="flex flex-col items-center justify-center p-12 text-gray-500">
             <Loader2 className="animate-spin mb-2" size={32} />
-            Memuat data campaign...
+            <p>Memuat data campaign...</p>
           </div>
         ) : campaigns.length === 0 ? (
           <div className="p-12 text-center text-gray-500">Belum ada data campaign.</div>
