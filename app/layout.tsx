@@ -28,7 +28,10 @@ export const metadata: Metadata = {
     default: "Yayasan Baitul Ikhlas Peduli Yatim",
     template: "%s | Yayasan Baitul Ikhlas", // Mengizinkan halaman sub-menu mengubah title dinamis (cth: "Donasi | Yayasan Baitul Ikhlas")
   },
-  description: "Lembaga sosial yang berkomitmen untuk membahagiakan, mengasuh, dan memberdayakan anak-anak yatim dan dhuafa.",
+  description: "Lembaga sosial yang berkomitmen untuk membahagiakan, mengasuh, dan memberdayakan anak-anak yatim dan piatu",
+  verification: {
+    google: "google-site-verification=TWP1TuddwbOax4WYf_TitdREzW84M8I1A6Nzyypraqo",
+  },
   keywords: ["yayasan yatim", "baitul ikhlas", "peduli yatim", "donasi yatim", "lembaga sosial", "amal"],
   authors: [{ name: "Yayasan Baitul Ikhlas" }],
   metadataBase: new URL("https://yayasanbaitulikhlass.vercel.app"), // Ganti dengan domain asli Anda nanti
