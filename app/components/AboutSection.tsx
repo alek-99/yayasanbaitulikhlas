@@ -82,7 +82,6 @@ export default function AboutSection() {
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
-                // PERBAIKAN: Menghapus properti 'priority' agar gambar di-load secara lazy otomatis demi menghilangkan error 412
               />
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#0D4A3E]/40 via-transparent to-transparent" />
@@ -118,7 +117,7 @@ export default function AboutSection() {
               <div className="h-px w-8 bg-amber-500" aria-hidden="true" />
             </div>
 
-            {/* SEO Heading: Menggunakan H2 dengan struktur kaya kata kunci */}
+            {/* SEO Heading */}
             <h2 className="font-serif text-3xl lg:text-4xl xl:text-5xl font-bold text-[#0D4A3E] mb-6 leading-[1.15]">
               Memberikan Kehidupan{" "}
               <span className="relative inline-block">
@@ -141,21 +140,24 @@ export default function AboutSection() {
 
             {/* Values */}
             <div className="grid gap-5">
-              {values.map((item) => (
-                <div
-                  key={item.title}
-                  className="group flex items-start gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-md hover:shadow-emerald-900/8 transition-all duration-300 cursor-default border border-transparent hover:border-amber-100"
-                >
-                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shrink-0 shadow-md transition-transform group-hover:scale-110 duration-300`}>
-                    <item.icon className="w-5 h-5 text-white" aria-hidden="true" />
+              {values.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="group flex items-start gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-md hover:shadow-emerald-900/8 transition-all duration-300 cursor-default border border-transparent hover:border-amber-100"
+                  >
+                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shrink-0 shadow-md transition-transform group-hover:scale-110 duration-300`}>
+                      <IconComponent className="w-5 h-5 text-white" aria-hidden="true" />
+                    </div>
+                    <div className="grow">
+                      {/* PERBAIKAN: Baris <item.title /> yang memicu error sudah dihapus dari sini */}
+                      <h3 className="font-bold text-[#0D4A3E] mb-1 text-sm">{item.title}</h3>
+                      <p className="text-[#6B8C7D] text-sm leading-relaxed">{item.desc}</p>
+                    </div>
                   </div>
-                  <div className="grow">
-                    <item.title /> {/* Tetap dipertahankan struktur aslinya */}
-                    <h3 className="font-bold text-[#0D4A3E] mb-1 text-sm">{item.title}</h3>
-                    <p className="text-[#6B8C7D] text-sm leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* CTA Buttons dengan optimasi Title Link */}

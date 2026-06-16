@@ -227,7 +227,7 @@ function ProgramModal({ program, onClose }: { program: Program, onClose: () => v
   const Icon = config.icon;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
       {/* Backdrop */}
       <motion.div 
         initial={{ opacity: 0 }} 
@@ -238,57 +238,62 @@ function ProgramModal({ program, onClose }: { program: Program, onClose: () => v
       />
       
       {/* Modal Container */}
+      {/* Perubahan: Mengubah overflow-y-auto ke kontainer utama agar foto & teks berputar bersama dalam satu scrollbar */}
       <motion.div 
         initial={{ opacity: 0, y: "100%" }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="relative bg-white w-full sm:max-w-4xl h-[85vh] sm:h-auto sm:max-h-[90vh] rounded-t-4xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col md:flex-row z-10"
+        className="relative bg-white w-full sm:max-w-4xl h-[85vh] sm:h-auto max-h-[90vh] sm:max-h-[85vh] rounded-t-4xl sm:rounded-[2.5rem] overflow-y-auto sm:overflow-hidden shadow-2xl flex flex-col md:flex-row z-10"
       >
-        {/* Tombol Tutup/Close Floating - Fixed CSS Conflict h-5 vs h-6 */}
+        {/* Tombol Tutup/Close Floating - Ditambahkan posisi 'fixed'/'absolute' yang solid agar tidak rusak saat scroll */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-900/40 sm:bg-slate-100 text-white sm:text-slate-700 hover:bg-slate-200 sm:hover:text-slate-900 transition-all flex items-center justify-center active:scale-90 shadow-md"
+          className="absolute top-4 right-4 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-900/40 sm:bg-slate-100 text-white sm:text-slate-700 hover:bg-slate-200 sm:hover:text-slate-900 transition-all flex items-center justify-center active:scale-90 shadow-md"
         >
           <X className="w-5 h-5 md:w-6 md:h-6" />
         </button>
 
         {/* Bagian Media/Gambar */}
-        <div className="w-full md:w-1/2 aspect-16/10 md:aspect-auto md:h-full bg-slate-100 relative shrink-0">
+        {/* Perubahan: Pada mobile menggunakan h-auto dan aspek rasio konstan agar ukurannya pas, pada desktop (md) kembali mengunci tinggi kontainer */}
+        <div className="w-full md:w-1/2 aspect-16/10 md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px] bg-slate-100 relative shrink-0">
           {program.image_url ? (
             <img src={program.image_url} className="w-full h-full object-cover" alt={program.title} />
           ) : (
-            <div className="w-full h-full flex items-center justify-center py-8 md:py-0">
+            <div className="w-full h-full flex items-center justify-center py-12 md:py-0">
               <Icon className="w-16 h-16 md:w-28 md:h-28 opacity-10" />
             </div>
           )}
-          <div className={`absolute bottom-4 left-4 px-4 py-1.5 rounded-xl bg-white shadow-md ${config.color} font-black text-xs flex items-center gap-2`}>
+          <div className={`absolute bottom-4 left-4 px-4 py-1.5 rounded-xl bg-white shadow-md ${config.color} font-black text-xs flex items-center gap-2 z-10`}>
             <Icon className="w-4 h-4" />
             {program.category}
           </div>
         </div>
 
         {/* Bagian Konten */}
-        <div className="w-full md:w-1/2 p-6 md:p-10 lg:p-12 overflow-y-auto flex flex-col min-h-0 bg-white">
-          <div className="flex items-center gap-2 text-slate-400 font-bold text-[9px] uppercase tracking-[0.15em] mb-2">
-            <Calendar className="w-3 h-3" />
-            Publikasi Terbaru
-          </div>
-          
-          <h2 className="text-xl md:text-3xl font-black text-slate-900 mb-3 leading-snug break-all">
-            {program.title}
-          </h2>
-          
-          <div className="w-12 md:w-16 h-1 bg-emerald-500 rounded-full mb-5 shrink-0" />
-          
-          <div className="prose prose-slate max-w-none grow mb-6">
-            <p className="text-slate-600 text-sm md:text-base font-medium leading-relaxed whitespace-pre-line break-all">
-              {program.description}
-            </p>
+        {/* Perubahan: Menghapus overflow-y-auto di sini agar tidak menciptakan double-scroll space pada mobile */}
+        <div className="w-full md:w-1/2 p-6 md:p-10 lg:p-12 md:overflow-y-auto flex flex-col justify-between bg-white">
+          <div>
+            <div className="flex items-center gap-2 text-slate-400 font-bold text-[9px] uppercase tracking-[0.15em] mb-2">
+              <Calendar className="w-3 h-3" />
+              Publikasi Terbaru
+            </div>
+            
+            <h2 className="text-xl md:text-3xl font-black text-slate-900 mb-3 leading-snug break-words">
+              {program.title}
+            </h2>
+            
+            <div className="w-12 md:w-16 h-1 bg-emerald-500 rounded-full mb-5 shrink-0" />
+            
+            <div className="prose prose-slate max-w-none mb-6">
+              <p className="text-slate-600 text-sm md:text-base font-medium leading-relaxed whitespace-pre-line break-words">
+                {program.description}
+              </p>
+            </div>
           </div>
           
           {/* Tombol Aksi */}
-          <div className="mt-auto pt-2 shrink-0">
+          <div className="mt-4 pt-2 shrink-0">
             <button 
               onClick={onClose} 
               className="w-full py-3 md:py-3.5 px-6 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-xl font-bold text-sm transition-all active:scale-95 text-center"

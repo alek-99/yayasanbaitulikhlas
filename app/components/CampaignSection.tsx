@@ -137,11 +137,11 @@ export default function CampaignSection() {
           </Link>
 
           <Link
-            href="#donasi"
+            href="../campaign"
             className="inline-flex items-center gap-2 bg-amber-50 text-amber-700 border border-amber-200 font-bold px-8 py-4 rounded-2xl hover:bg-amber-100 transition-all duration-300 text-sm"
           >
             <Heart size={15} className="fill-amber-500 text-amber-500" />
-            Donasi Langsung
+            Donasi Sekarang
           </Link>
         </div>
 

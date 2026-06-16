@@ -31,9 +31,9 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignTit
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const ACCOUNTS_INFO = [
-    { key: 'bca', name: 'Bank BCA', accountNumber: '8720123456', holder: 'Yayasan Kebaikan Indonesia' },
-    { key: 'bri', name: 'Bank BRI', accountNumber: '034101000123302', holder: 'Yayasan Kebaikan Indonesia' },
-    { key: 'dana', name: 'DANA (E-Wallet)', accountNumber: '081234567890', holder: 'YYS KEBAIKAN INDO' },
+    { key: 'bca', name: 'Bank BCA', accountNumber: '542130821', holder: 'Deny Firmansyah' },
+    { key: 'bri', name: 'Bank BRI', accountNumber: '00800107442535', holder: 'Yayasan Baitul Ikhlas Peduli Yatim' },
+    { key: 'dana', name: 'DANA (E-Wallet)', accountNumber: '081284439712', holder: 'Deny Firmansyah' },
   ]
 
   const copyToClipboard = (accountNumber: string, key: string) => {
@@ -97,8 +97,8 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignTit
 
     setSubmitting(true)
 
-    const fileExt = proofFile.name.split('.').pop()
-    const fileName = `${createdDonationId}-${Date.now()}.${fileExt}`
+    const fileExt = proofFile.name.split('.').pop() || 'dat'
+    const fileName = `${createdDonationId}-${proofFile.lastModified}-${proofFile.size}.${fileExt}`
     const filePath = `proofs/${fileName}`
 
     // 1. Upload ke bucket donation-proof
