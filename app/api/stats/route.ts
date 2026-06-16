@@ -1,12 +1,25 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
+
 export const dynamic = 'force-dynamic';
+
 export async function GET() {
+  // 🚀 PERBAIKAN CRITICAL: Bypass jika supabase client belum siap saat proses build time Vercel
+  if (!supabase) {
+    console.warn("Bypass query: Supabase client belum terinisialisasi.");
+    return NextResponse.json({
+      stats: { totalCollected: 0, totalPending: 0, activePrograms: 0, publishedArticles: 0, activeCampaigns: 0, totalDonors: 0 },
+      recentDonations: []
+    });
+  }
+
   try {
     // 1. Ambil data donasi untuk menghitung akumulasi nominal keuangan
-    const { data: donations } = await supabase
+    const { data: donations, error: donationError } = await supabase
       .from('donations')
       .select('amount, status');
+
+    if (donationError) throw donationError;
 
     const totalCollected = donations?.filter(d => d.status === 'confirmed').reduce((sum, d) => sum + Number(d.amount), 0) || 0;
     const totalPending = donations?.filter(d => d.status === 'pending').reduce((sum, d) => sum + Number(d.amount), 0) || 0;
@@ -20,11 +33,13 @@ export async function GET() {
     ]);
 
     // 3. Ambil 5 riwayat transaksi donasi paling baru masuk beserta nama campaign-nya
-    const { data: recentDonations } = await supabase
+    const { data: recentDonations, error: recentError } = await supabase
       .from('donations')
       .select('id, donor_name, amount, status, created_at, campaigns(title)')
       .order('created_at', { ascending: false })
       .limit(5);
+
+    if (recentError) throw recentError;
 
     return NextResponse.json({
       stats: {
@@ -38,6 +53,7 @@ export async function GET() {
       recentDonations: recentDonations || [],
     });
   } catch (error) {
+    console.error("Database Error:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
