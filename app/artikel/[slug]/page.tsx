@@ -19,7 +19,7 @@ export default function DetailArtikelPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  // Unwrapping params sesuai standar Next.js terbaru
+  // Unwrapping params sesuai standar Next.js
   const resolvedParams = use(params);
 
   const [article, setArticle] = useState<Article | null>(null);
