@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient'; // 👈 Import fungsi pembantu
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  // 🚀 PERBAIKAN CRITICAL: Bypass jika supabase client belum siap saat proses build time Vercel
-  if (!supabase) {
-    console.warn("Bypass query: Supabase client belum terinisialisasi.");
+  // 🚀 BYPASS AMAN: Jika env belum siap (seperti saat build time di Vercel), langsung return data kosong
+  if (!isSupabaseConfigured()) {
+    console.warn("Bypass query: Supabase environment variables belum siap.");
     return NextResponse.json({
       stats: { totalCollected: 0, totalPending: 0, activePrograms: 0, publishedArticles: 0, activeCampaigns: 0, totalDonors: 0 },
       recentDonations: []
@@ -29,10 +29,10 @@ export async function GET() {
       supabase.from('programs').select('*', { count: 'exact', head: true }).eq('status', 'active'),
       supabase.from('articles').select('*', { count: 'exact', head: true }).eq('status', 'published'),
       supabase.from('campaigns').select('*', { count: 'exact', head: true }).eq('status', 'active'),
-      supabase.from('donations').select('*', { count: 'exact', head: true }) // Total donatur terdaftar
+      supabase.from('donations').select('*', { count: 'exact', head: true }) 
     ]);
 
-    // 3. Ambil 5 riwayat transaksi donasi paling baru masuk beserta nama campaign-nya
+    // 3. Ambil 5 riwayat transaksi donasi paling baru masuk
     const { data: recentDonations, error: recentError } = await supabase
       .from('donations')
       .select('id, donor_name, amount, status, created_at, campaigns(title)')

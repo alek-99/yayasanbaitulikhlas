@@ -122,7 +122,7 @@ export default function CampaignDetailPage({ params }: PageProps) {
 
               <div className="flex items-start gap-2 text-[11px] text-slate-500 border-t border-slate-800/80 pt-4">
                 <ShieldCheck size={16} className="text-emerald-500 flex-shrink-0 mt-0.5" />
-                <p>Donasi Anda diproses secara aman, dilindungi enkripsi, dan diverifikasi transparan oleh pengelola.</p>
+                Donasi Anda diproses secara aman, dilindungi enkripsi, dan diverifikasi transparan oleh pengelola.
               </div>
             </div>
           </div>

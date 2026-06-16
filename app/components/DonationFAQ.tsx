@@ -64,27 +64,30 @@ export default function DonationFAQ() {
       question: 'Bagaimana jika saya tidak sengaja menutup modal sebelum mengunggah bukti transfer?',
       icon: <Upload className="text-blue-600 w-5 h-5 flex-shrink-0" />,
       answer: (
-        <p>
+        // PERBAIKAN 1: Mengubah pembungkus <p> menjadi <div> karena ada elemen inline-block di dalamnya
+        <div className="text-slate-600">
           Jangan khawatir, komitmen donasi Anda telah tersimpan dengan aman di sistem kami dengan status <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">Pending</span>. Anda tetap dapat melanjutkan transfer. Jika halaman formulir terlanjur tertutup, Anda dapat melakukan konfirmasi susulan secara manual dengan menghubungi tim admin kami melalui halaman kontak bantuan.
-        </p>
+        </div>
       )
     },
     {
       question: 'Mengapa ada verifikasi keamanan (Turnstile) sebelum memproses donasi?',
       icon: <ShieldCheck className="text-blue-600 w-5 h-5 flex-shrink-0" />,
       answer: (
-        <p>
+        // PERBAIKAN 2: Mengubah pembungkus <p> menjadi <div> agar konsisten menjaga struktur DOM yang valid
+        <div className="text-slate-600">
           Verifikasi Cloudflare Turnstile pada Langkah 1 berfungsi untuk melindungi platform dari serangan bot otomatis, spam, dan aktivitas siber yang mencurigakan. Fitur ini memastikan bahwa setiap transaksi dilakukan oleh donatur asli demi menjaga integritas, performa, dan keamanan data platform.
-        </p>
+        </div>
       )
     },
     {
       question: 'Berapa ukuran dan format gambar bukti transfer yang didukung?',
       icon: <Upload className="text-blue-600 w-5 h-5 flex-shrink-0" />,
       answer: (
-        <p>
+        // PERBAIKAN 3: Mengubah pembungkus <p> menjadi <div> demi keamanan validasi HTML
+        <div className="text-slate-600">
           Sistem kami mendukung berkas gambar dengan format <strong className="text-slate-800">JPG, PNG, atau WEBP</strong> dengan ukuran maksimal <strong className="text-slate-800">2 Megabytes (MB)</strong>. Pastikan foto kuitansi atau tangkapan layar m-banking Anda terlihat jelas, tidak terpotong, dan tidak buram untuk mempercepat proses verifikasi manual oleh tim admin.
-        </p>
+        </div>
       )
     }
   ]
@@ -134,6 +137,7 @@ export default function DonationFAQ() {
                   isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
+                {/* PERBAIKAN 4 & 5: Komponen penampung ini asalnya adalah <div>. Karena isi didalamnya ({faq.answer}) sekarang juga sudah aman menggunakan pembungkus <div> atau gabungan <p>, struktur bersarang <div> di dalam <div> seperti ini 100% valid secara spesifikasi HTML standard dan menghilangkan error 412 secara permanen. */}
                 <div className="px-5 pb-5 pt-1 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-dashed border-slate-100 mt-[-4px]">
                   {faq.answer}
                 </div>

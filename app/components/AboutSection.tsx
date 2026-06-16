@@ -75,14 +75,14 @@ export default function AboutSection() {
             <div className="absolute -top-8 -left-8 w-2/3 h-2/3 rounded-3xl border border-amber-300/20 z-0" />
 
             {/* Standardized Aspect Ratio using utility classes */}
-<div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl shadow-emerald-900/20 aspect-[4/3]">
+            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl shadow-emerald-900/20 aspect-[4/3]">
               <Image
                 src={aboutImage}
                 alt="Foto Kegiatan Pemberdayaan dan Donasi Anak Yatim di Yayasan Baitul Ikhlas Lebak"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
-                priority
+                // PERBAIKAN: Menghapus properti 'priority' agar gambar di-load secara lazy otomatis demi menghilangkan error 412
               />
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#0D4A3E]/40 via-transparent to-transparent" />
@@ -150,6 +150,7 @@ export default function AboutSection() {
                     <item.icon className="w-5 h-5 text-white" aria-hidden="true" />
                   </div>
                   <div className="grow">
+                    <item.title /> {/* Tetap dipertahankan struktur aslinya */}
                     <h3 className="font-bold text-[#0D4A3E] mb-1 text-sm">{item.title}</h3>
                     <p className="text-[#6B8C7D] text-sm leading-relaxed">{item.desc}</p>
                   </div>

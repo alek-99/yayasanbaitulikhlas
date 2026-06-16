@@ -330,7 +330,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignTit
 
             <div className="flex items-start gap-2 text-[11px] text-gray-400 bg-blue-50/50 p-3 rounded-xl border border-blue-100/40">
               <ShieldCheck size={16} className="text-blue-500 flex-shrink-0 mt-0.5" />
-              <p>Mengirim bukti pembayaran palsu atau salah sasaran dapat memicu pembatalan sistem donasi otomatis.</p>
+              Mengirim bukti pembayaran palsu atau salah sasaran dapat memicu pembatalan sistem donasi otomatis.
             </div>
 
             <div className="grid grid-cols-2 gap-3 pt-2">
