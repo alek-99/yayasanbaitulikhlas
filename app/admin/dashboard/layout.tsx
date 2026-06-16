@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: 'Campaign Donasi', path: '/admin/dashboard/campaign', icon: HeartHandshake },
     { name: 'Data Donasi', path: '/admin/dashboard/donasi', icon: ClipboardList },
     { name: 'Transparansi Donasi', path: '/admin/dashboard/transparansi-donasi', icon: ClipboardList },
-    { name: 'Testimoni', path: '/admin/dashboard/testimoni', icon: Phone },
+    // { name: 'Testimoni', path: '/admin/dashboard/testimoni', icon: Phone },
     // { name: 'Pesan', path: '/admin/dashboard/pesan', icon: Mail },
   ];
 
