@@ -143,14 +143,7 @@ export default function Navbar() {
                   Donasi Sekarang
                 </Link>
                 
-                <Link 
-                  href="/admin" 
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 text-center text-sm font-semibold text-gray-600 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all"
-                >
-                  <LayoutDashboard className="w-4 h-4 text-gray-400" />
-                  Admin Dashboard
-                </Link>
+               
               </div>
             </div>
           </div>

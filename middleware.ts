@@ -1,38 +1,34 @@
-// src/middleware.ts atau ./middleware.ts
+// middleware.ts
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createClientForMiddleware } from '@/lib/supabaseServer'
 
-export function middleware(request: NextRequest) {
-    // console.log("🔴 MIDDLEWARE BERJALAN DI URL:", request.nextUrl.pathname);
+export async function middleware(request: NextRequest) {
+  // Ambil client dan response pembawa cookie dari helper kita
+  const { supabaseServer, response } = createClientForMiddleware(request)
+
+  // Periksa user yang sedang aktif langsung ke API Supabase (Sangat Aman)
+  const { data: { user } } = await supabaseServer.auth.getUser()
+
   const { pathname } = request.nextUrl
-  
-  // 1. Tentukan halaman yang mau dijaga
   const isAdminArea = pathname.startsWith('/admin')
   const isLoginPage = pathname === '/admin/login'
 
-  // 2. Ambil token Supabase langsung dari cookies browser
-  // Supabase biasanya menyimpan session dengan nama format: sb-[project-id]-auth-token
-  // Kita cek apakah ada cookie yang mengandung kata 'auth-token'
-  const allCookies = request.cookies.getAll()
-  const hasSupabaseToken = allCookies.some(cookie => cookie.name.includes('auth-token'))
-
-  // 3. JIKA mencoba masuk ke area admin (bukan halaman login) dan TIDAK punya token
-  if (isAdminArea && !isLoginPage && !hasSupabaseToken) {
-    // Tendang paksa ke halaman login
+  // Jika belum login dan coba masuk area admin -> Lempar ke login
+  if (isAdminArea && !isLoginPage && !user) {
     const loginUrl = new URL('/admin/login', request.url)
     return NextResponse.redirect(loginUrl)
   }
 
-  // JIKA sudah punya token tapi mau akses halaman login lagi, lempar ke dashboard
-  if (isLoginPage && hasSupabaseToken) {
+  // Jika sudah login tapi iseng buka halaman login lagi -> Lempar ke dashboard
+  if (isLoginPage && user) {
     const dashboardUrl = new URL('/admin/dashboard', request.url)
     return NextResponse.redirect(dashboardUrl)
   }
 
-  return NextResponse.next()
+  return response
 }
 
-// Jalankan middleware HANYA untuk rute admin agar menghemat performa
 export const config = {
   matcher: '/admin/:path*',
 }
