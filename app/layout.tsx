@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     template: "%s | Yayasan Baitul Ikhlas", // Mengizinkan halaman sub-menu mengubah title dinamis (cth: "Donasi | Yayasan Baitul Ikhlas")
   },
   description: "Lembaga sosial yang berkomitmen untuk membahagiakan, mengasuh, dan memberdayakan anak-anak yatim dan piatu",
-  verification: {
-    google: "google-site-verification=TWP1TuddwbOax4WYf_TitdREzW84M8I1A6Nzyypraqo",
+ verification: {
+    google: "WvItYbOQve4oCwAfIDp1r9eWBo1tW4KZY3r-SlfbXAc",
   },
   keywords: ["yayasan yatim", "baitul ikhlas", "peduli yatim", "donasi yatim", "lembaga sosial", "amal"],
   authors: [{ name: "Yayasan Baitul Ikhlas" }],
