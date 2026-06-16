@@ -1,16 +1,17 @@
-
+import { NextRequest, NextResponse } from 'next/server';
 import { createClientForMiddleware } from '@/lib/supabaseServer'; 
 import { isSupabaseConfigured } from '@/lib/supabaseClient'; 
-import { NextRequest, NextResponse } from 'next/server';
+
 export const dynamic = 'force-dynamic';
 
-//  struktur data donasi untuk TypeScript
+// 1. Definisikan struktur data donasi untuk TypeScript agar aman saat proses looping (filter/reduce)
 interface DonationRow {
   amount: number | string;
   status: string;
 }
-export async function GET(request: NextRequest)  {
-  // 🚀 BYPASS AMAN: Jika env belum siap, langsung return data kosong
+
+export async function GET(request: NextRequest) {
+  // 🚀 BYPASS AMAN: Jika env belum siap (seperti saat build time di Vercel), langsung return data kosong
   if (!isSupabaseConfigured()) {
     console.warn("Bypass query: Supabase environment variables belum siap.");
     return NextResponse.json({
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest)  {
     });
   }
 
-  // Gunakan server client bawaan helper Anda
+  // Gunakan server client dari helper supabaseServer Anda
   const { supabaseServer } = createClientForMiddleware(request);
 
   try {
@@ -30,11 +31,13 @@ export async function GET(request: NextRequest)  {
 
     if (donationError) throw donationError;
 
-    // 🌟 PERBAIKAN: Memberikan tipe data eksplisit (DonationRow, number) agar lulus build TypeScript
-    const totalCollected = (donations as DonationRow[])?.filter((d: DonationRow) => d.status === 'confirmed')
+    // 🌟 TYPE CASTING: Tegaskan tipe data ke TypeScript agar tidak dianggap 'any'
+    const donationsData = donations as DonationRow[] | null;
+
+    const totalCollected = donationsData?.filter((d: DonationRow) => d.status === 'confirmed')
       .reduce((sum: number, d: DonationRow) => sum + Number(d.amount), 0) || 0;
 
-    const totalPending = (donations as DonationRow[])?.filter((d: DonationRow) => d.status === 'pending')
+    const totalPending = donationsData?.filter((d: DonationRow) => d.status === 'pending')
       .reduce((sum: number, d: DonationRow) => sum + Number(d.amount), 0) || 0;
 
     // 2. Hitung jumlah baris data aktif dari tabel lain secara paralel
