@@ -2,7 +2,7 @@
 
 import { useEffect, useState, use } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { Calendar, Target, Heart, ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
+import { Calendar, Target, Heart, ArrowLeft, Loader2, ShieldCheck, Share2, Check, Link2 } from 'lucide-react'
 import Link from 'next/link'
 import DonationModal from '../../components/DonationModal'
 
@@ -16,6 +16,7 @@ export default function CampaignDetailPage({ params }: PageProps) {
   const [loading, setLoading] = useState(true)
   const [progress, setProgress] = useState(0)
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -34,6 +35,19 @@ export default function CampaignDetailPage({ params }: PageProps) {
     }
     fetchDetail()
   }, [id])
+
+  // Fungsi untuk menyalin tautan ke clipboard
+  const handleCopyLink = () => {
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(window.location.href)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  // URL Encode data untuk share link
+  const currentUrl = typeof window !== "undefined" ? encodeURIComponent(window.location.href) : ""
+  const shareText = campaign ? encodeURIComponent(`Mari bantu sesama dalam program: "${campaign.title}". Salurkan donasi terbaik Anda melalui tautan berikut:\n\n`) : ""
 
   if (loading) {
     return (
@@ -72,12 +86,70 @@ export default function CampaignDetailPage({ params }: PageProps) {
                   <div className="w-full h-full flex items-center justify-center text-slate-600">Gambar Tidak Tersedia</div>
                 )}
               </div>
-              <div className="p-6 sm:p-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4 tracking-tight">{campaign.title}</h1>
-                <div className="border-t border-slate-800 pt-6">
-                  <h3 className="font-semibold text-slate-200 mb-3">Deskripsi Lengkap</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-line">{campaign.description}</p>
+              <div className="p-6 sm:p-8 space-y-6">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4 tracking-tight">{campaign.title}</h1>
+                  <div className="border-t border-slate-800 pt-6">
+                    <h3 className="font-semibold text-slate-200 mb-3">Deskripsi Lengkap</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-line">{campaign.description}</p>
+                  </div>
                 </div>
+
+                {/* FITUR BAGIKAN (SHARE BAR) */}
+                <div className="border-t border-slate-800/80 pt-6">
+                  <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 text-slate-300">
+                      <Share2 size={16} className="text-indigo-400" />
+                      <span className="text-xs font-bold uppercase tracking-wider">Bagikan Campaign:</span>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
+                      {/* WhatsApp */}
+                      <a
+                        href={`https://api.whatsapp.com/send?text=${shareText}${currentUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold bg-[#25D366] text-white px-3 py-2 rounded-lg hover:bg-[#20ba5a] transition shadow-sm"
+                      >
+                        WhatsApp
+                      </a>
+
+                      {/* Instagram */}
+                      <a
+                        href="https://www.instagram.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white px-3 py-2 rounded-lg hover:opacity-90 transition shadow-sm"
+                      >
+                        Instagram
+                      </a>
+
+                      {/* TikTok */}
+                      <a
+                        href="https://www.tiktok.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold bg-black border border-slate-800 text-white px-3 py-2 rounded-lg hover:bg-neutral-900 transition shadow-sm"
+                      >
+                        TikTok
+                      </a>
+
+                      {/* Salin Tautan */}
+                      <button
+                        onClick={handleCopyLink}
+                        className={`flex items-center gap-1 text-xs font-bold px-3 py-2 rounded-lg transition border ${
+                          copied 
+                            ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" 
+                            : "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800"
+                        }`}
+                      >
+                        {copied ? <Check size={14} /> : <Link2 size={14} />}
+                        <span>{copied ? "Disalin!" : "Salin Link"}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
