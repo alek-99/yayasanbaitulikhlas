@@ -32,26 +32,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? article.content.substring(0, 140).replace(/[#*`_]/g, "") + "..."
     : "Menebar kebaikan, memurnikan keikhlasan demi Anak Yatim.";
 
-  // Pastikan ekstensi default image sesuai dengan file asli di folder public Anda (.png / .jpg)
+  // Pastikan file ini ada di folder /public dan ukurannya di bawah 200KB
   const imageUrl = article.image_url || `${baseUrl}/default-share-image.png`;
 
   return {
     title: `${article.title} | Yayasan Baitul Ikhlas`,
     description: shortDescription,
+    
+    // Menyediakan tag metadata dasar yang sangat disukai WhatsApp
+    alternates: {
+      canonical: `${baseUrl}/artikel/${resolvedParams.slug}`,
+    },
+
     openGraph: {
       title: article.title,
       description: shortDescription,
       type: "article",
       url: `${baseUrl}/artikel/${resolvedParams.slug}`,
+      siteName: "Yayasan Baitul Ikhlas",
       images: [
         {
           url: imageUrl,
-          width: 1200,
-          height: 630,
+          width: 1200,      // Menegaskan ukuran ke WhatsApp agar layout langsung terbentuk
+          height: 630,     // Menegaskan ukuran ke WhatsApp
+          type: "image/png", // Sesuaikan jika gambar default Anda .jpg (ganti jadi image/jpeg)
           alt: article.title,
         },
       ],
     },
+    
     twitter: {
       card: "summary_large_image",
       title: article.title,
